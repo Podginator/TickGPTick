@@ -1,0 +1,22 @@
+{
+  "name": "TickGPTick",
+  "version": "0.0.1",
+  "description": "Adding some basic AI features to tick tick",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tom Rogers",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.20.0",
+    "got": "^11.5.2",
+    "lodash": "^4.17.21",
+    "openai": "^3.2.1",
+    "openssl": "^1.1.0",
+    "openssl-nodejs": "^1.0.5"
+  }
+}
