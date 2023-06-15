@@ -32,7 +32,7 @@ If you type ai{{a prompt}} into the description field, in the background the Ope
 The following environment variables must be set in order for this application to work 
 
 ## OPENAI_API_KEY
-The Private Key used to validate the veracity of your requests to Bunq. This is part of setting up the BUNQ API 
+Your Open AI API Key. 
 
 ## TICKUSERNAME
 Your Tick Tick Username 
