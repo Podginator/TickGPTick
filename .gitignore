@@ -2,6 +2,8 @@ enc/
 cdk/.env
 node_modules/*
 */node_modules
+.env
+.DS_Store
 
 # CDK asset staging directory
 .cdk.staging

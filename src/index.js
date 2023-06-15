@@ -56,7 +56,6 @@ const { getExpandedNumberFromTags } = require('./lib/utils');
         tasksContainingAiPrompt.map(expandDescriptionsForAiPrompt)
       )
 
-      
       const updatedDescriptions = updates.map((task, index) => ({
         ...task,
         content: task.content.replace(/ai{{.*}}/g, aiResponses[index])
