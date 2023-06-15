@@ -8,33 +8,31 @@ const DESCRIPTION_TEMPLATES = ["Use {} to create some context for subsequent tas
 
 const extractParentInformationOrReturnDescription = async (content) => { 
   const regex = /description:?(.*)parent_title:?(.+)|(.*)/gms;
-  let m;
+  let matches;
   
   const set = new Set();
-  while ((m = regex.exec(content)) !== null) {
-      // This is necessary to avoid infinite loops with zero-width matches
-      if (m.index === regex.lastIndex) {
+  while ((matches = regex.exec(content)) !== null) {
+      if (matches.index === regex.lastIndex) {
           regex.lastIndex++;
-      }
-      
-      // The result can be accessed through the `m`-variable.
-      m.forEach((match) => {
-          set.add(match)
-      });
+      }      
+
+      matches.forEach(set.add)
     }
 
     const arrSet = set.size > 1 ? [...set].slice(1).filter(it => it) : [...set].filter(it => it).slice(0, 1);
-    
+
     return arrSet.map((it, idx) => DESCRIPTION_TEMPLATES[idx].replace("{}", it));
 }
 
 const expandTasksIntoAtomicTasks = async ({ title, content }, maxTasks = 5) => {
   const additionalContextClues = (await extractParentInformationOrReturnDescription(content)).map(content => ({ role: "user", content }));
-  console.log(additionalContextClues);
+  const messages = [{ role: "user", content: `make ${maxTasks} todo list steps simplifying task "${title}" into smaller tasks` }, ...additionalContextClues]
   
+  console.log(`Calling OpenAI with steps ${JSON.stringify(messages)}`)
+
   const response = await openai.createChatCompletion({
       model:"gpt-3.5-turbo-0613",
-      messages: [{ role: "user", content: `make exactly ${maxTasks} todo list steps simplifying task "${title}" into smaller tasks` }, ...additionalContextClues], //
+      messages,
       functions: [ 
         { 
           name: "createSmallerTasks",
@@ -59,7 +57,6 @@ const expandTasksIntoAtomicTasks = async ({ title, content }, maxTasks = 5) => {
             }
           }
         }
-
       ],
       function_call: "auto"
     });
