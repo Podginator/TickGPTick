@@ -75,9 +75,9 @@ const expandTasksIntoAtomicTasks = async ({ title, content }, maxTasks = 5) => {
 const expandDescriptionsForAiPrompt = async description => {
   const prompt = `[short response][non conversational] ${description}`
 
-  const response = await openai.createChatCompletion({
+  const response = await openai.createCompletion({
     max_tokens: 256,
-    model: 'text-davinci-003',
+    model: 'gpt-3.5-turbo-0613',
     prompt,
     temperature: 0
   })
