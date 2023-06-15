@@ -16,7 +16,7 @@ const extractParentInformationOrReturnDescription = async (content) => {
           regex.lastIndex++;
       }      
 
-      matches.forEach(set.add)
+      matches.forEach(it => set.add(it))
     }
 
     const arrSet = set.size > 1 ? [...set].slice(1).filter(it => it) : [...set].filter(it => it).slice(0, 1);
@@ -26,7 +26,7 @@ const extractParentInformationOrReturnDescription = async (content) => {
 
 const expandTasksIntoAtomicTasks = async ({ title, content }, maxTasks = 5) => {
   const additionalContextClues = (await extractParentInformationOrReturnDescription(content)).map(content => ({ role: "user", content }));
-  const messages = [{ role: "user", content: `make ${maxTasks} todo list steps simplifying task "${title}" into smaller tasks` }, ...additionalContextClues]
+  const messages = [{ role: "user", content: `make exactly ${maxTasks} todo list steps simplifying task "${title}" into smaller tasks` }, ...additionalContextClues]
   
   console.log(`Calling OpenAI with steps ${JSON.stringify(messages)}`)
 
@@ -42,7 +42,7 @@ const expandTasksIntoAtomicTasks = async ({ title, content }, maxTasks = 5) => {
             properties: {
               tasks: { 
                 type: "object",
-                description: "The smaller atomic tasks",
+                description: "The array of smaller atomic tasks",
                 properties: { 
                   "description": {
                     type: "string", 
@@ -65,7 +65,7 @@ const expandTasksIntoAtomicTasks = async ({ title, content }, maxTasks = 5) => {
 
   if (res['function_call']) { 
     const { tasks } = JSON.parse(res['function_call'].arguments)
-
+    console.log(tasks);
     return tasks; 
   }
 
