@@ -52,13 +52,14 @@ class TickTickClient {
   }
 
   async addSubstacksToTask (parent, projectId, substacks) {
-    const addingDate = new Date().toISOString
+    const addingDate = new Date().toISOString();
+
 
     const substackUpdates = substacks.map(({title, description}) => ({
       title,
       startDate: addingDate,
       modifiedDate: addingDate,
-      dueDate: parent.dueDate ?? addingDate
+      dueDate: parent.dueDate ?? addingDate,
       projectId,
       parentId: parent.id,
       content: `description: ${description}\n\nparent_title: ${parent.title}`
