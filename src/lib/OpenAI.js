@@ -40,18 +40,21 @@ const expandTasksIntoAtomicTasks = async ({ title, content }, maxTasks = 5) => {
             type: "object", 
             properties: {
               tasks: { 
-                type: "object",
-                description: "The array of smaller atomic tasks",
-                properties: { 
-                  "description": {
-                    type: "string", 
-                    description: "Some suggestions of how to achieve it"
-                  },
-                  "title": { 
-                    type: "string", 
-                    description: "The title of the task, summarising what to do"
+                type: "array",
+                items: { 
+                  type: "object",
+                  properties: { 
+                    "description": {
+                      type: "string", 
+                      description: "Some suggestions of how to achieve it"
+                    },
+                    "title": { 
+                      type: "string", 
+                      description: "The title of the task, summarising what to do"
+                    }
                   }
-                }
+                },
+                description: "The array of smaller atomic tasks",
               }
             }
           }
@@ -63,6 +66,7 @@ const expandTasksIntoAtomicTasks = async ({ title, content }, maxTasks = 5) => {
   const res = response.choices[0]?.message ?? {};
 
   if (res['function_call']) { 
+    console.log(JSON.parse(res['function_call'].arguments))
     const { tasks } = JSON.parse(res['function_call'].arguments)
     console.log(tasks);
     return tasks; 
