@@ -1,8 +1,7 @@
-const { Configuration, OpenAIApi } = require('openai')
-const configuration = new Configuration({
+const { OpenAI } = require('openai')
+const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 })
-const openai = new OpenAIApi(configuration)
 
 const DESCRIPTION_TEMPLATES = ["Use {} to create some context for subsequent tasks", "parent task was titled {}"];
 
@@ -30,7 +29,7 @@ const expandTasksIntoAtomicTasks = async ({ title, content }, maxTasks = 5) => {
   
   console.log(`Calling OpenAI with steps ${JSON.stringify(messages)}`)
 
-  const response = await openai.createChatCompletion({
+  const response = await openai.chat.completions.create({
       model:"gpt-3.5-turbo-0613",
       messages,
       functions: [ 
@@ -61,7 +60,7 @@ const expandTasksIntoAtomicTasks = async ({ title, content }, maxTasks = 5) => {
       function_call: "auto"
     });
 
-  const res = response.data.choices[0]?.message ?? {};
+  const res = response.choices[0]?.message ?? {};
 
   if (res['function_call']) { 
     const { tasks } = JSON.parse(res['function_call'].arguments)
@@ -75,14 +74,14 @@ const expandTasksIntoAtomicTasks = async ({ title, content }, maxTasks = 5) => {
 const expandDescriptionsForAiPrompt = async description => {
   const prompt = `[short response][non conversational] ${description}`
 
-  const response = await openai.createCompletion({
+  const response = await openai.chat.completions.create({
     max_tokens: 256,
     model: 'gpt-3.5-turbo-0613',
-    prompt,
+    messages: [{ role: 'user', content: prompt }],
     temperature: 0
   })
 
-  return response.data.choices[0].text.trimStart()
+  return response.choices[0].message.content.trimStart()
 }
 
 module.exports = { expandTasksIntoAtomicTasks, expandDescriptionsForAiPrompt }

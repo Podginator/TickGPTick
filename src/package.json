@@ -15,7 +15,7 @@
     "axios": "^0.20.0",
     "got": "^11.5.2",
     "lodash": "^4.17.21",
-    "openai": "^3.3.0",
+    "openai": "^4.7.1",
     "openssl": "^1.1.0",
     "openssl-nodejs": "^1.0.5"
   }
