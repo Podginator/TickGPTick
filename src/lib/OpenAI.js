@@ -30,7 +30,7 @@ const expandTasksIntoAtomicTasks = async ({ title, content }, maxTasks = 5) => {
   console.log(`Calling OpenAI with steps ${JSON.stringify(messages)}`)
 
   const response = await openai.chat.completions.create({
-      model:"gpt-3.5-turbo-0613",
+      model:"gpt-4o-mini",
       messages,
       functions: [ 
         { 
@@ -80,7 +80,7 @@ const expandDescriptionsForAiPrompt = async description => {
 
   const response = await openai.chat.completions.create({
     max_tokens: 256,
-    model: 'gpt-3.5-turbo-0613',
+    model:"gpt-4o-mini",
     messages: [{ role: 'user', content: prompt }],
     temperature: 0
   })

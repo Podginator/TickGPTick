@@ -12,8 +12,7 @@ class TickTickClient {
     const tickTickInstance = axios.create({
       baseURL: 'https://api.ticktick.com/api/v2'
     })
-
-    tickTickInstance.defaults.headers.common['x-device'] = JSON.stringify({device: 'TickGPTick'})
+    tickTickInstance.defaults.headers.common['x-device'] = JSON.stringify({"platform":"web","os":"macOS 10.15.7","device":"Chrome 134.0.0.0","name":"","version":6240,"id":"67e049e95bcccd664f1ff841","channel":"website","campaign":"","websocket":""})
 
     const { token } = await tickTickInstance
       .post('/user/signon?wc=true&remember=true', { username, password })

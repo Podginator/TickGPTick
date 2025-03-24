@@ -13,3 +13,4 @@ cdk.out
 .parcel-cache
 
 .env 
+.idea/*
